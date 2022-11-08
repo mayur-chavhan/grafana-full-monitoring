@@ -1,0 +1,8 @@
+users:
+  ghost:
+    displayname: "Barry Allen"
+    password: "generateandpasteithere"
+    email: youremail@gmail.com
+    groups:
+      - admins
+      - dev

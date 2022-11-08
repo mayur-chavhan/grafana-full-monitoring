@@ -1,8 +1,10 @@
-# Speedtest Exporter for Grafana
+# Server
 
-https://docs.miguelndecarvalho.pt/projects/speedtest-exporter/
+- Update the domain.com to your domain in .env file
+- ``` docker-compose up -d ``` 
+- 
 
-https://grafana.com/grafana/dashboards/13665
+# Client 
 
-# Prometheus Exporter for Grafana
+- git clone -depth 1 
 

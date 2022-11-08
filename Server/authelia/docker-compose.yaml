@@ -1,0 +1,53 @@
+version: '3.8'
+
+networks:
+  proxy:
+    external: true
+
+services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    volumes:
+      - ./config:/config
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+
+      #Routers
+      - "traefik.http.routers.authelia.entrypoints=https"
+      - "traefik.http.routers.authelia.rule=Host(`auth.$DOMAIN`)"
+      - "traefik.http.routers.authelia.tls=true"
+      #- "traefik.http.routers.authelia.tls.certresolver=cloudflare"
+
+      #Middlewares
+      #- "traefik.http.middlewares.authelia=authelia" #(Only needed in Traefik 2.1. Not Needed in Traefik 2.2 and above)
+      - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.$DOMAIN"
+      - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User, Remote-Groups"
+
+      # Watchtower
+      #- "com.centurylinklabs.watchtower.enable=true"
+
+    expose:
+      - 9091
+    restart: unless-stopped
+    environment:
+      - PGID=$PGID
+      - PUID=$PUID
+      - TZ=$TZ
+
+  redis:
+    image: redis:alpine
+    container_name: authelia_redis
+    volumes:
+      - ./redis:/data
+    networks:
+      - proxy
+    expose:
+      - 6379
+    restart: unless-stopped
+    environment:
+      - TZ=$TZ
