@@ -50,16 +50,14 @@ services:
     restart: unless-stopped
     expose:
       - 9090
-    networks:
-      - proxy
+ 
     labels:
       org.label-schema.group: "monitoring"
 
   pushgateway:
     image: prom/pushgateway:v1.4.3
     container_name: pushgateway
-    networks:
-      - proxy
+ 
     restart: unless-stopped
     expose:
       - 9091

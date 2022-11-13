@@ -10,17 +10,11 @@ services:
     container_name: authelia
     volumes:
       - ./config:/config
-    networks:
-      - proxy
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-
-      #Routers
-      - "traefik.http.routers.authelia.entrypoints=https"
-      - "traefik.http.routers.authelia.rule=Host(`auth.$DOMAIN`)"
-      - "traefik.http.routers.authelia.tls=true"
-      #- "traefik.http.routers.authelia.tls.certresolver=cloudflare"
+      - traefik.http.routers.https.rule=Host(`auth.$DOMAIN`)
+      - traefik.http.routers.https.entrypoints=https
+      - traefik.http.routers.https.tls=true
+      - traefik.http.routers.https.tls.certresolver=${CERT_RESOLVER}
 
       #Middlewares
       #- "traefik.http.middlewares.authelia=authelia" #(Only needed in Traefik 2.1. Not Needed in Traefik 2.2 and above)

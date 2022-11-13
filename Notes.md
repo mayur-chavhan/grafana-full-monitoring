@@ -1,11 +1,35 @@
-# Server
+# Traefik 
 
-- Update the domain.com to your domain in .env file
-- ``` docker-compose up -d ``` 
-- 
+1. Add Environment Variables
 
+- Create enn file and add environment
 
+`nano .env`
 
+- add below environment
+
+```
+DOMAIN=localhost
+EMAIL=admin@localhost
+CERT_RESOLVER=
+TRAEFIK_USER=admin
+TRAEFIK_PASSWORD_HASH=$2y$10$zi5n43jq9S63gBqSJwHTH.nCai2vB0SW/ABPGg2jSGmJBVRo0A.ni
+```
+
+Note that you should leave `CERT_RESOLVER` variable empty if you test your deployment locally. The password is admin and you might want to change it before deploying to production.
+
+   2. Set Your Own Password
+
+If you're curious about HTTP basic auth and how it can be used with Traefik, you can read the full post. Here is the excerpt and it assumes you already installed htpasswd:
+
+```nano
+htpasswd -nBC 10 admin
+
+New password:
+Re-type new password:
+
+admin:$2y$10$zi5n43jq9S63gBqSJwHTH.nCai2vB0SW/ABPGg2jSGmJBVRo0A.ni
+```
 
 # Authelia
 
@@ -47,3 +71,4 @@ storage:
   encryption_key: QEFS8F4AhqCyKmyqrrwc6mjCc
 
 ------------------
+```
